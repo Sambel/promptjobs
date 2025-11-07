@@ -28,7 +28,7 @@
                     </nav>
                 </div>
                 <div>
-                    <button onclick="showPublishJobModal()" class="px-6 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:from-blue-700 hover:to-purple-700 font-semibold transition-all shadow-md hover:shadow-lg">
+                    <button onclick="showPublishJobModal()" class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-semibold transition-colors">
                         ✨ Publish Job - $99
                     </button>
                 </div>
