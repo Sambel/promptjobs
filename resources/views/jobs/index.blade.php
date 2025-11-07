@@ -8,7 +8,7 @@
     <!-- Search Bar -->
     <div class="mb-6">
         <form method="GET" action="{{ route('jobs.index') }}" id="filterForm">
-            <div class="flex flex-col md:flex-row gap-3 mb-4">
+            <div class="flex flex-col md:flex-row gap-3">
                 <input
                     type="text"
                     name="search"
@@ -24,103 +24,10 @@
                 </button>
             </div>
 
-            <!-- Advanced Filters -->
-            <div class="bg-white border border-gray-200 rounded-lg p-4">
-                <div class="flex items-center justify-between mb-3">
-                    <h3 class="font-semibold text-gray-900">🎯 Filters</h3>
-                    @if(request()->hasAny(['company', 'zone', 'country', 'remote_type', 'job_type']))
-                    <a href="{{ route('jobs.index') }}" class="text-sm text-blue-600 hover:text-blue-800">
-                        ✨ Clear all filters
-                    </a>
-                    @endif
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
-                    <!-- Company Filter -->
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">🏢 Company</label>
-                        <select
-                            name="company"
-                            onchange="this.form.submit()"
-                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                        >
-                            <option value="">All Companies</option>
-                            @foreach($companies as $company)
-                            <option value="{{ $company }}" {{ request('company') === $company ? 'selected' : '' }}>
-                                {{ $company }}
-                            </option>
-                            @endforeach
-                        </select>
-                    </div>
-
-                    <!-- Zone Filter -->
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">🌍 Zone</label>
-                        <select
-                            name="zone"
-                            onchange="this.form.submit()"
-                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                        >
-                            <option value="">All Zones</option>
-                            @foreach($zones as $zone)
-                            <option value="{{ $zone }}" {{ request('zone') === $zone ? 'selected' : '' }}>
-                                {{ $zone }}
-                            </option>
-                            @endforeach
-                        </select>
-                    </div>
-
-                    <!-- Country Filter -->
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">📍 Country</label>
-                        <select
-                            name="country"
-                            onchange="this.form.submit()"
-                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                        >
-                            <option value="">All Countries</option>
-                            @foreach($countries as $country)
-                            <option value="{{ $country }}" {{ request('country') === $country ? 'selected' : '' }}>
-                                {{ \App\Helpers\CountryFlagHelper::getFlag($country) }} {{ $country }}
-                            </option>
-                            @endforeach
-                        </select>
-                    </div>
-
-                    <!-- Remote Type Filter -->
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">🏠 Work Mode</label>
-                        <select
-                            name="remote_type"
-                            onchange="this.form.submit()"
-                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                        >
-                            <option value="">All</option>
-                            <option value="remote" {{ request('remote_type') === 'remote' ? 'selected' : '' }}>🏠 Remote</option>
-                            <option value="on-site" {{ request('remote_type') === 'on-site' ? 'selected' : '' }}>🏢 On-site</option>
-                        </select>
-                    </div>
-
-                    <!-- Job Type Filter -->
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">⏰ Job Type</label>
-                        <select
-                            name="job_type"
-                            onchange="this.form.submit()"
-                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                        >
-                            <option value="">All Types</option>
-                            @foreach($jobTypes as $type)
-                            <option value="{{ $type }}" {{ request('job_type') === $type ? 'selected' : '' }}>
-                                {{ ucfirst(str_replace('-', ' ', $type)) }}
-                            </option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
-            </div>
-        </form>
-    </div>
+    <!-- Layout: Main Content + Sidebar -->
+    <div class="grid grid-cols-1 lg:grid-cols-4 gap-6 mt-6">
+        <!-- Main Content -->
+        <main class="lg:col-span-3">
 
     <!-- Active Filters Display -->
     @if(request()->hasAny(['search', 'company', 'zone', 'country', 'remote_type', 'job_type']))
@@ -315,5 +222,109 @@
             <p class="text-gray-600">No jobs found. Try adjusting your search criteria.</p>
         </div>
     @endif
+
+        </main>
+
+        <!-- Sidebar: Filters (Desktop sticky, mobile stacked) -->
+        <aside class="lg:col-span-1">
+            <form method="GET" action="{{ route('jobs.index') }}" id="filterForm">
+            <div class="bg-white border border-gray-200 rounded-lg p-4 lg:sticky lg:top-8">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="font-semibold text-gray-900">🎯 Filters</h3>
+                    @if(request()->hasAny(['company', 'zone', 'country', 'remote_type', 'job_type']))
+                    <a href="{{ route('jobs.index') }}" class="text-xs text-blue-600 hover:text-blue-800">
+                        Clear all
+                    </a>
+                    @endif
+                </div>
+
+                <div class="space-y-4">
+                    <!-- Company Filter -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">🏢 Company</label>
+                        <select
+                            name="company"
+                            onchange="this.form.submit()"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                        >
+                            <option value="">All Companies</option>
+                            @foreach($companies as $company)
+                            <option value="{{ $company }}" {{ request('company') === $company ? 'selected' : '' }}>
+                                {{ $company }}
+                            </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <!-- Zone Filter -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">🌍 Zone</label>
+                        <select
+                            name="zone"
+                            onchange="this.form.submit()"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                        >
+                            <option value="">All Zones</option>
+                            @foreach($zones as $zone)
+                            <option value="{{ $zone }}" {{ request('zone') === $zone ? 'selected' : '' }}>
+                                {{ $zone }}
+                            </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <!-- Country Filter -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">📍 Country</label>
+                        <select
+                            name="country"
+                            onchange="this.form.submit()"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                        >
+                            <option value="">All Countries</option>
+                            @foreach($countries as $country)
+                            <option value="{{ $country }}" {{ request('country') === $country ? 'selected' : '' }}>
+                                {{ \App\Helpers\CountryFlagHelper::getFlag($country) }} {{ $country }}
+                            </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <!-- Remote Type Filter -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">🏠 Work Mode</label>
+                        <select
+                            name="remote_type"
+                            onchange="this.form.submit()"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                        >
+                            <option value="">All</option>
+                            <option value="remote" {{ request('remote_type') === 'remote' ? 'selected' : '' }}>🏠 Remote</option>
+                            <option value="on-site" {{ request('remote_type') === 'on-site' ? 'selected' : '' }}>🏢 On-site</option>
+                        </select>
+                    </div>
+
+                    <!-- Job Type Filter -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">⏰ Job Type</label>
+                        <select
+                            name="job_type"
+                            onchange="this.form.submit()"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                        >
+                            <option value="">All Types</option>
+                            @foreach($jobTypes as $type)
+                            <option value="{{ $type }}" {{ request('job_type') === $type ? 'selected' : '' }}>
+                                {{ ucfirst(str_replace('-', ' ', $type)) }}
+                            </option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+            </div>
+            </form>
+        </aside>
+    </div>
+
 </div>
 @endsection
