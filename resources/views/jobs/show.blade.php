@@ -86,9 +86,12 @@
             <div class="mb-4">
                 <p class="text-xs text-gray-500 mb-2">📌 Categories</p>
                 <div class="flex flex-wrap gap-2">
-                    @foreach($job->generic_tags as $tag)
+                    @foreach(array_slice($job->generic_tags, 0, 6) as $tag)
                     <span class="px-3 py-1 bg-blue-50 text-blue-700 rounded-full text-sm font-medium">{{ $tag }}</span>
                     @endforeach
+                    @if(count($job->generic_tags) > 6)
+                    <span class="px-3 py-1 text-gray-500 text-sm">+{{ count($job->generic_tags) - 6 }}</span>
+                    @endif
                 </div>
             </div>
             @endif
@@ -97,9 +100,12 @@
             <div>
                 <p class="text-xs text-gray-500 mb-2">💻 Technologies</p>
                 <div class="flex flex-wrap gap-2">
-                    @foreach($job->programming_languages as $lang)
+                    @foreach(array_slice($job->programming_languages, 0, 6) as $lang)
                     <span class="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm font-mono">{{ $lang }}</span>
                     @endforeach
+                    @if(count($job->programming_languages) > 6)
+                    <span class="px-3 py-1 text-gray-500 text-sm">+{{ count($job->programming_languages) - 6 }}</span>
+                    @endif
                 </div>
             </div>
             @endif

@@ -37,7 +37,7 @@
                 </div>
                 <div class="flex-shrink-0">
                     <button onclick="showPublishJobModal()" class="px-3 py-2 md:px-6 md:py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-semibold transition-colors text-sm md:text-base whitespace-nowrap">
-                        <span class="hidden sm:inline">✨ Publish Job - </span><span class="sm:hidden">✨ Post - </span>$99
+                        <span class="hidden sm:inline">Publish Job - </span><span class="sm:hidden">Post - </span>$99
                     </button>
                 </div>
             </div>
