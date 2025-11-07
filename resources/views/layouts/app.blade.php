@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="google-site-verification" content="zLESLfpqaZAQWor2Y62p6DFt6zma2K4mJ5kWjgvMGus" />
+    <meta name="google-site-verification" content="BPiNRgo1wVTmtMpKqy-Kgyo9fEeqEBxt0eCXeRpTLIU" />
     <title>@yield('title', 'PromptJobs.io - Find your next AI job')</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
