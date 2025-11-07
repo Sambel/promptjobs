@@ -20,18 +20,18 @@
             <div class="flex items-center justify-between">
                 <div class="flex items-center space-x-4 md:space-x-8 flex-1">
                     <a href="{{ route('jobs.index') }}" class="flex items-center space-x-2" title="Ai jobs">
-                        <span class="text-xl md:text-2xl font-bold text-gray-900">🚀 PromptJobs.io</span>
+                        <span class="text-xl md:text-2xl font-bold text-gray-900">PromptJobs.io</span>
                     </a>
                     <!-- Desktop Navigation -->
                     <nav class="hidden md:flex items-center space-x-6">
                         <a href="{{ route('companies.index') }}" class="text-gray-700 hover:text-blue-600 font-medium {{ request()->routeIs('companies.*') ? 'text-blue-600' : '' }}">
-                            🏢 Companies
+                            Companies
                         </a>
                     </nav>
                     <!-- Mobile Navigation -->
                     <nav class="md:hidden">
                         <a href="{{ route('companies.index') }}" class="text-gray-700 hover:text-blue-600 font-medium text-sm {{ request()->routeIs('companies.*') ? 'text-blue-600' : '' }}">
-                            🏢 Companies
+                            Companies
                         </a>
                     </nav>
                 </div>
