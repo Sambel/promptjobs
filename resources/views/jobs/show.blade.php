@@ -5,30 +5,30 @@
 @section('content')
 <div class="max-w-7xl mx-auto px-4 py-8">
     <!-- Breadcrumb -->
-    <div class="mb-6">
-        <nav class="flex items-center text-sm text-gray-600">
-            <a href="{{ route('companies.index') }}" class="hover:text-blue-600">🏢 Companies</a>
-            <span class="mx-2">/</span>
-            <a href="{{ route('companies.jobs', $job->company_slug) }}" class="hover:text-blue-600">{{ $job->company }}</a>
-            <span class="mx-2">/</span>
-            <span class="text-gray-900 font-medium">{{ $job->title }}</span>
+    <div class="mb-4 md:mb-6 overflow-x-auto">
+        <nav class="flex items-center text-xs md:text-sm text-gray-600 whitespace-nowrap pb-2 md:pb-0">
+            <a href="{{ route('companies.index') }}" class="hover:text-blue-600 flex-shrink-0">🏢 Companies</a>
+            <span class="mx-1 md:mx-2 flex-shrink-0">/</span>
+            <a href="{{ route('companies.jobs', $job->company_slug) }}" class="hover:text-blue-600 truncate max-w-[150px] md:max-w-none">{{ $job->company }}</a>
+            <span class="mx-1 md:mx-2 flex-shrink-0">/</span>
+            <span class="text-gray-900 font-medium truncate max-w-[150px] md:max-w-none">{{ $job->title }}</span>
         </nav>
     </div>
 
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
         <!-- Main Content -->
-        <div class="lg:col-span-2">
+        <div class="md:col-span-2">
 
     <!-- Job Header -->
-    <div class="bg-white rounded-lg border border-gray-200 p-8 mb-6">
-        <div class="flex items-start justify-between gap-8 mb-6">
-            <div class="flex items-start space-x-4 flex-1">
+    <div class="bg-white rounded-lg border border-gray-200 p-4 md:p-6 lg:p-8 mb-6">
+        <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4 md:gap-6 mb-6">
+            <div class="flex items-start space-x-3 md:space-x-4 flex-1">
                 @if($job->company_logo)
-                <img src="{{ $job->company_logo }}" alt="{{ $job->company }}" class="w-20 h-20 rounded flex-shrink-0" onerror="this.style.display='none'">
+                <img src="{{ $job->company_logo }}" alt="{{ $job->company }}" class="w-14 h-14 md:w-16 md:h-16 lg:w-20 lg:h-20 rounded flex-shrink-0" onerror="this.style.display='none'">
                 @endif
-                <div class="flex-1">
-                    <h1 class="text-3xl font-bold text-gray-900 mb-2">{{ $job->title }}</h1>
-                    <p class="text-xl text-gray-600 mb-4">{{ $job->company }}</p>
+                <div class="flex-1 min-w-0">
+                    <h1 class="text-xl md:text-2xl lg:text-3xl font-bold text-gray-900 mb-2 line-clamp-3 md:line-clamp-2">{{ $job->title }}</h1>
+                    <p class="text-base md:text-lg lg:text-xl text-gray-600 mb-3 md:mb-4 truncate">{{ $job->company }}</p>
 
                     <div class="flex flex-wrap gap-3 mb-4">
                         @if($job->location)
@@ -64,13 +64,13 @@
                 </div>
             </div>
 
-            <!-- Apply Button - Right side -->
-            <div class="flex items-start flex-shrink-0">
+            <!-- Apply Button -->
+            <div class="flex items-start md:flex-shrink-0">
                 <a
                     href="{{ $job->apply_url }}"
                     target="_blank"
                     rel="noopener noreferrer"
-                    class="px-8 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium text-lg whitespace-nowrap transition-colors"
+                    class="w-full md:w-auto px-6 md:px-8 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium text-base md:text-lg whitespace-nowrap transition-colors text-center min-h-[48px] flex items-center justify-center"
                 >
                     ✉️ Apply Now
                 </a>
@@ -108,23 +108,23 @@
     </div>
 
     <!-- Job Description -->
-    <div class="bg-white rounded-lg border border-gray-200 p-8">
-        <h2 class="text-2xl font-bold text-gray-900 mb-4">📄 Job Description</h2>
+    <div class="bg-white rounded-lg border border-gray-200 p-4 md:p-6 lg:p-8">
+        <h2 class="text-xl md:text-2xl font-bold text-gray-900 mb-4">📄 Job Description</h2>
         <div class="prose prose-blue max-w-none">
-            <p class="text-gray-700 leading-relaxed whitespace-pre-line">{{ $job->description }}</p>
+            <p class="text-sm md:text-base text-gray-700 leading-relaxed whitespace-pre-line">{{ $job->description }}</p>
         </div>
 
         <!-- Apply Button at Bottom -->
-        <div class="mt-8 pt-6 border-t border-gray-200">
+        <div class="mt-6 md:mt-8 pt-6 border-t border-gray-200">
             <a
                 href="{{ $job->apply_url }}"
                 target="_blank"
                 rel="noopener noreferrer"
-                class="inline-block px-8 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium text-lg"
+                class="w-full md:w-auto inline-block px-6 md:px-8 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium text-base md:text-lg text-center min-h-[48px]"
             >
                 ✉️ Apply for this position
             </a>
-            <p class="text-sm text-gray-500 mt-3">
+            <p class="text-xs md:text-sm text-gray-500 mt-3">
                 🕒 Posted {{ $job->published_at->diffForHumans() }}
             </p>
         </div>
@@ -133,10 +133,10 @@
         </div>
 
         <!-- Sidebar: Similar Jobs -->
-        <div class="lg:col-span-1">
-            <div class="bg-white rounded-lg border border-gray-200 p-6 sticky top-8">
-                <h3 class="text-lg font-bold text-gray-900 mb-4">
-                    🔍 Similar @if($similarJobsCategory){{ $similarJobsCategory }}@endif Jobs
+        <div class="md:col-span-1">
+            <div class="bg-white rounded-lg border border-gray-200 p-4 md:p-6 md:sticky md:top-8">
+                <h3 class="text-base md:text-lg font-bold text-gray-900 mb-4">
+                    🔍 Similar @if($similarJobsCategory)<span class="truncate inline-block max-w-[150px] align-bottom">{{ $similarJobsCategory }}</span>@endif Jobs
                 </h3>
 
                 @if($similarJobs->count() > 0)
