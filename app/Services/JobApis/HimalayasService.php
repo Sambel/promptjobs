@@ -3,6 +3,7 @@
 namespace App\Services\JobApis;
 
 use App\Services\AiJobFilterService;
+use App\Services\JobDomainService;
 use App\Services\RemoteDetectionService;
 use App\Services\TextCleanerService;
 use Illuminate\Support\Facades\Http;
@@ -77,6 +78,7 @@ class HimalayasService implements JobApiInterface
 
     private function transformJob(array $job): array
     {
+        $title = $job['title'] ?? 'Untitled Position';
         $location = $this->extractLocation($job);
         $description = $this->cleanDescription($job['description'] ?? '');
 
@@ -84,13 +86,14 @@ class HimalayasService implements JobApiInterface
             'external_id' => $job['id'] ?? null,
             'source' => self::SOURCE_NAME,
             'source_url' => $job['url'] ?? null,
-            'title' => $job['title'] ?? 'Untitled Position',
+            'title' => $title,
             'company' => $job['company']['name'] ?? 'Unknown Company',
             'company_logo' => $this->getCompanyLogo($job),
             'description' => $description,
             'location' => $location,
             'remote' => RemoteDetectionService::isRemote($location, $description),
             'job_type' => $this->determineJobType($job),
+            'domain' => JobDomainService::detectDomain($title, $description),
             'salary_range' => $this->extractSalary($job),
             'apply_url' => $job['url'] ?? '#',
             'tags' => $this->extractTags($job),

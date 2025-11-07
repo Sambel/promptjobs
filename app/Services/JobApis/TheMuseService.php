@@ -3,6 +3,7 @@
 namespace App\Services\JobApis;
 
 use App\Services\AiJobFilterService;
+use App\Services\JobDomainService;
 use App\Services\RemoteDetectionService;
 use App\Services\TextCleanerService;
 use Illuminate\Support\Facades\Http;
@@ -75,6 +76,7 @@ class TheMuseService implements JobApiInterface
     {
         $company = $job['company'] ?? [];
         $locations = $job['locations'] ?? [];
+        $title = $job['name'] ?? 'Untitled Position';
         $location = $this->extractLocation($locations);
         $description = $this->extractDescription($job);
 
@@ -82,13 +84,14 @@ class TheMuseService implements JobApiInterface
             'external_id' => $job['id'] ?? null,
             'source' => self::SOURCE_NAME,
             'source_url' => $job['refs']['landing_page'] ?? null,
-            'title' => $job['name'] ?? 'Untitled Position',
+            'title' => $title,
             'company' => $company['name'] ?? 'Unknown Company',
             'company_logo' => $this->getCompanyLogo($company),
             'description' => $description,
             'location' => $location,
             'remote' => RemoteDetectionService::isRemote($location, $description),
             'job_type' => $this->determineJobType($job),
+            'domain' => JobDomainService::detectDomain($title, $description),
             'salary_range' => null, // TheMuse doesn't provide salary in API
             'apply_url' => $job['refs']['landing_page'] ?? '#',
             'tags' => $this->extractTags($job),

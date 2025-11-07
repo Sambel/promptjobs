@@ -2,6 +2,7 @@
 
 namespace App\Services\JobApis;
 
+use App\Services\JobDomainService;
 use App\Services\RemoteDetectionService;
 use App\Services\TextCleanerService;
 
@@ -54,6 +55,7 @@ class AiJobsNetService implements JobApiInterface
 
     private function transformJob(array $job): array
     {
+        $title = $job['title'] ?? 'Untitled Position';
         $location = $job['location'] ?? null;
         $description = $job['description'] ?? '';
 
@@ -61,13 +63,14 @@ class AiJobsNetService implements JobApiInterface
             'external_id' => $job['id'] ?? null,
             'source' => self::SOURCE_NAME,
             'source_url' => $job['url'] ?? null,
-            'title' => $job['title'] ?? 'Untitled Position',
+            'title' => $title,
             'company' => $job['company'] ?? 'Unknown Company',
             'company_logo' => $this->getCompanyLogo($job['company'] ?? null),
             'description' => $description,
             'location' => $location,
             'remote' => RemoteDetectionService::isRemote($location, $description),
             'job_type' => $this->determineJobType($job),
+            'domain' => JobDomainService::detectDomain($title, $description),
             'salary_range' => $job['salary'] ?? null,
             'apply_url' => $job['url'] ?? '#',
             'tags' => $this->extractTags($job),

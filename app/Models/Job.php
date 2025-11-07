@@ -22,6 +22,7 @@ class Job extends Model
         'location',
         'remote',
         'job_type',
+        'domain',
         'salary_range',
         'apply_url',
         'tags',

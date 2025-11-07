@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Job;
 use App\Models\Location;
+use App\Services\JobDomainService;
 use Illuminate\Http\Request;
 
 class JobController extends Controller
@@ -59,6 +60,11 @@ class JobController extends Controller
             $query->where('job_type', $request->job_type);
         }
 
+        // Filter by domain
+        if ($request->filled('domain')) {
+            $query->where('domain', $request->domain);
+        }
+
         // Filter by tags
         if ($request->filled('tag')) {
             $tag = $request->tag;
@@ -90,7 +96,10 @@ class JobController extends Controller
             ->distinct()
             ->pluck('job_type');
 
-        return view('jobs.index', compact('jobs', 'featuredJobs', 'companies', 'zones', 'countries', 'jobTypes'));
+        // Get available domains
+        $domains = JobDomainService::getDomains();
+
+        return view('jobs.index', compact('jobs', 'featuredJobs', 'companies', 'zones', 'countries', 'jobTypes', 'domains'));
     }
 
     public function show(string $company, string $slug)
