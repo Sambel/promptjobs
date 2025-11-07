@@ -16,7 +16,7 @@
 
 ### Backend
 - **Framework**: Laravel 12.x (PHP 8.2+)
-- **Database**: SQLite (default), supports MySQL/PostgreSQL
+- **Database**: MySQL (production), supports PostgreSQL
 - **Queue System**: Database-backed queue for async job imports
 - **HTTP Client**: Laravel HTTP facade for API integrations
 
@@ -305,7 +305,12 @@ GET  /companies/{company}/{job}     → jobs.show (JobController@show)
 
 ```env
 APP_NAME=PromptJobs.io
-DB_CONNECTION=sqlite                    # Default database
+DB_CONNECTION=mysql                     # Production database
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=promptjobs
+DB_USERNAME=root
+DB_PASSWORD=
 QUEUE_CONNECTION=database               # Use DB for queue
 CACHE_STORE=database
 SESSION_DRIVER=database
@@ -345,6 +350,12 @@ php artisan key:generate
 
 2. **Database**:
 ```bash
+# Create MySQL database first
+mysql -u root -p
+CREATE DATABASE promptjobs;
+exit;
+
+# Run migrations
 php artisan migrate
 ```
 
