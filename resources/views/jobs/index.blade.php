@@ -133,6 +133,13 @@
         @if(!request('search'))
         <p class="text-sm text-gray-500">
             Last updated {{ \App\Models\Job::published()->latest('updated_at')->first()?->updated_at?->diffForHumans() ?? 'recently' }}
+            <span class="relative inline-block ml-1">
+                <span class="cursor-help text-gray-400 hover:text-gray-600" id="refresh-info">ℹ️</span>
+                <span id="refresh-tooltip" class="invisible opacity-0 absolute left-0 bottom-full mb-2 w-64 px-3 py-2 bg-gray-900 text-white text-xs rounded-lg shadow-lg transition-all duration-200 z-10">
+                    Job listings are automatically refreshed every 3 hours from multiple sources
+                    <span class="absolute top-full left-4 -mt-1 border-4 border-transparent border-t-gray-900"></span>
+                </span>
+            </span>
         </p>
         @endif
     </div>
@@ -224,6 +231,24 @@
     @endif
 
         </main>
+
+        <script>
+            // Tooltip functionality
+            const refreshInfo = document.getElementById('refresh-info');
+            const refreshTooltip = document.getElementById('refresh-tooltip');
+
+            if (refreshInfo && refreshTooltip) {
+                refreshInfo.addEventListener('mouseenter', () => {
+                    refreshTooltip.classList.remove('invisible', 'opacity-0');
+                    refreshTooltip.classList.add('visible', 'opacity-100');
+                });
+
+                refreshInfo.addEventListener('mouseleave', () => {
+                    refreshTooltip.classList.remove('visible', 'opacity-100');
+                    refreshTooltip.classList.add('invisible', 'opacity-0');
+                });
+            }
+        </script>
 
         <!-- Sidebar: Filters (Desktop sticky, mobile stacked) -->
         <aside class="lg:col-span-1">
