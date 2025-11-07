@@ -135,7 +135,9 @@
         <!-- Sidebar: Similar Jobs -->
         <div class="lg:col-span-1">
             <div class="bg-white rounded-lg border border-gray-200 p-6 sticky top-8">
-                <h3 class="text-lg font-bold text-gray-900 mb-4">🔍 Similar Jobs</h3>
+                <h3 class="text-lg font-bold text-gray-900 mb-4">
+                    🔍 Similar @if($similarJobsCategory){{ $similarJobsCategory }}@endif Jobs
+                </h3>
 
                 @if($similarJobs->count() > 0)
                     <div class="space-y-4">

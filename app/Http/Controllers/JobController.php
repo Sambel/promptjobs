@@ -105,8 +105,13 @@ class JobController extends Controller
 
         // Get similar jobs based on tags (categories)
         $similarJobs = collect();
+        $similarJobsCategory = null;
 
         if ($job->tags && count($job->tags) > 0) {
+            // Use the first tag as the category for personalization
+            $firstTag = $job->tags[0];
+            $similarJobsCategory = $firstTag;
+
             // Find jobs that share at least one tag with the current job
             $similarJobs = Job::published()
                 ->where('id', '!=', $job->id)
@@ -139,7 +144,7 @@ class JobController extends Controller
                 ->get();
         }
 
-        return view('jobs.show', compact('job', 'similarJobs'));
+        return view('jobs.show', compact('job', 'similarJobs', 'similarJobsCategory'));
     }
 
     public function companies()
