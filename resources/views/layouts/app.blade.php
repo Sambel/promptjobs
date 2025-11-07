@@ -46,7 +46,7 @@
 
     <!-- Publish Job Modal -->
     <div id="publishJobModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4" onclick="hidePublishJobModal()">
-        <div class="bg-white rounded-xl shadow-2xl max-w-md w-full p-6 md:p-8 transform transition-all" onclick="event.stopPropagation()">
+        <div class="bg-white rounded-xl shadow-2xl max-w-md w-full p-4 md:p-6 lg:p-8 transform transition-all overflow-hidden" onclick="event.stopPropagation()">
             <div class="text-center">
                 <div class="mb-4 md:mb-6">
                     <span class="text-5xl md:text-6xl">🚀</span>
