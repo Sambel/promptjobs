@@ -81,7 +81,7 @@
                             <option value="">All Countries</option>
                             @foreach($countries as $country)
                             <option value="{{ $country }}" {{ request('country') === $country ? 'selected' : '' }}>
-                                {{ $country }}
+                                {{ \App\Helpers\CountryFlagHelper::getFlag($country) }} {{ $country }}
                             </option>
                             @endforeach
                         </select>
