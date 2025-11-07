@@ -66,14 +66,13 @@
 
             <!-- Apply Button -->
             <div class="flex items-start md:flex-shrink-0">
-                <a
-                    href="{{ $job->apply_url }}"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="w-full md:w-auto px-6 md:px-8 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium text-base md:text-lg whitespace-nowrap transition-colors text-center min-h-[48px] flex items-center justify-center"
+                <span
+                    data-href="{{ route('jobs.apply', $job) }}"
+                    onclick="window.location.href=this.getAttribute('data-href');"
+                    class="w-full md:w-auto px-6 md:px-8 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium text-base md:text-lg whitespace-nowrap transition-colors text-center min-h-[48px] flex items-center justify-center cursor-pointer"
                 >
                     ✉️ Apply Now
-                </a>
+                </span>
             </div>
         </div>
 
@@ -122,14 +121,13 @@
 
         <!-- Apply Button at Bottom -->
         <div class="mt-6 md:mt-8 pt-6 border-t border-gray-200">
-            <a
-                href="{{ $job->apply_url }}"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="w-full md:w-auto inline-block px-6 md:px-8 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium text-base md:text-lg text-center min-h-[48px]"
+            <span
+                data-href="{{ route('jobs.apply', $job) }}"
+                onclick="window.location.href=this.getAttribute('data-href');"
+                class="w-full md:w-auto inline-block px-6 md:px-8 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium text-base md:text-lg text-center min-h-[48px] cursor-pointer"
             >
                 ✉️ Apply for this position
-            </a>
+            </span>
             <p class="text-xs md:text-sm text-gray-500 mt-3">
                 🕒 Posted {{ $job->published_at->diffForHumans() }}
             </p>

@@ -200,4 +200,10 @@ class JobController extends Controller
 
         return view('companies.jobs', compact('jobs', 'company'));
     }
+
+    public function redirectToApply(Job $job)
+    {
+        // Redirect to the external apply URL
+        return redirect()->away($job->apply_url);
+    }
 }
