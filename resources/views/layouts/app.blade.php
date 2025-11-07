@@ -27,9 +27,58 @@
                         </a>
                     </nav>
                 </div>
+                <div>
+                    <button onclick="showPublishJobModal()" class="px-6 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:from-blue-700 hover:to-purple-700 font-semibold transition-all shadow-md hover:shadow-lg">
+                        ✨ Publish Job - $99
+                    </button>
+                </div>
             </div>
         </div>
     </header>
+
+    <!-- Publish Job Modal -->
+    <div id="publishJobModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4" onclick="hidePublishJobModal()">
+        <div class="bg-white rounded-xl shadow-2xl max-w-md w-full p-8 transform transition-all" onclick="event.stopPropagation()">
+            <div class="text-center">
+                <div class="mb-6">
+                    <span class="text-6xl">🚀</span>
+                </div>
+                <h2 class="text-2xl font-bold text-gray-900 mb-4">Coming Soon!</h2>
+                <p class="text-gray-600 mb-6 leading-relaxed">
+                    We're working on this feature. Soon you'll be able to publish your AI job listing for <strong class="text-purple-600">$99</strong> and get:
+                </p>
+                <div class="bg-blue-50 rounded-lg p-4 mb-6 text-left">
+                    <ul class="space-y-2 text-sm text-gray-700">
+                        <li class="flex items-start">
+                            <span class="text-green-600 mr-2">✓</span>
+                            <span><strong>Featured placement</strong> on homepage</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-green-600 mr-2">✓</span>
+                            <span><strong>10 days</strong> of premium visibility</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-green-600 mr-2">✓</span>
+                            <span>Reach top <strong>AI talent</strong></span>
+                        </li>
+                    </ul>
+                </div>
+                <button onclick="hidePublishJobModal()" class="w-full px-6 py-3 bg-gray-900 text-white rounded-lg hover:bg-gray-800 font-medium transition-colors">
+                    Got it!
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showPublishJobModal() {
+            document.getElementById('publishJobModal').classList.remove('hidden');
+        }
+
+        function hidePublishJobModal() {
+            document.getElementById('publishJobModal').classList.add('hidden');
+        }
+    </script>
 
     <!-- Main Content -->
     <main>
