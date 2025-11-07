@@ -2,8 +2,8 @@
 
 namespace App\Services\JobApis;
 
+use App\Services\AiJobFilterService;
 use App\Services\TextCleanerService;
-
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
@@ -37,7 +37,12 @@ class TheMuseService implements JobApiInterface
                 }
 
                 foreach ($data['results'] as $job) {
-                    $allJobs[] = $this->transformJob($job);
+                    $transformed = $this->transformJob($job);
+
+                    // Only include AI-related jobs
+                    if (AiJobFilterService::isAiRelated($transformed['title'], $transformed['description'])) {
+                        $allJobs[] = $transformed;
+                    }
                 }
 
                 $page++;
@@ -47,6 +52,10 @@ class TheMuseService implements JobApiInterface
                     break;
                 }
             }
+
+            Log::info('TheMuse jobs filtered', [
+                'ai_related' => count($allJobs),
+            ]);
 
             return $allJobs;
 

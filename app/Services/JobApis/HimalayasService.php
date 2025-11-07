@@ -2,8 +2,8 @@
 
 namespace App\Services\JobApis;
 
+use App\Services\AiJobFilterService;
 use App\Services\TextCleanerService;
-
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
@@ -38,7 +38,12 @@ class HimalayasService implements JobApiInterface
                 }
 
                 foreach ($data['jobs'] as $job) {
-                    $allJobs[] = $this->transformJob($job);
+                    $transformed = $this->transformJob($job);
+
+                    // Only include AI-related jobs
+                    if (AiJobFilterService::isAiRelated($transformed['title'], $transformed['description'])) {
+                        $allJobs[] = $transformed;
+                    }
                 }
 
                 $offset += $limit;
@@ -51,6 +56,10 @@ class HimalayasService implements JobApiInterface
                 // Small delay to respect rate limits
                 usleep(500000); // 0.5 seconds
             }
+
+            Log::info('Himalayas jobs filtered', [
+                'ai_related' => count($allJobs),
+            ]);
 
             return $allJobs;
 

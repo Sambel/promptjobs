@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Models\Job;
+use App\Services\AiJobFilterService;
 use App\Services\LocationNormalizerService;
 use App\Services\TextCleanerService;
 use Illuminate\Console\Command;
@@ -72,9 +73,19 @@ class ImportJobicyJobs extends Command
             $imported = 0;
             $skipped = 0;
             $updated = 0;
+            $filteredOut = 0;
 
             foreach ($jobs as $jobData) {
                 try {
+                    // Filter out non-AI jobs
+                    $title = $jobData['jobTitle'] ?? '';
+                    $description = ($jobData['jobDescription'] ?? '') . ' ' . ($jobData['jobExcerpt'] ?? '');
+
+                    if (!AiJobFilterService::isAiRelated($title, $description)) {
+                        $filteredOut++;
+                        $bar->advance();
+                        continue;
+                    }
                     // Check if job already exists by external_id
                     $existingJob = Job::where('external_id', $jobData['id'])
                         ->where('source', 'jobicy')
@@ -156,7 +167,9 @@ class ImportJobicyJobs extends Command
                     ['New jobs imported', $imported],
                     ['Existing jobs updated', $updated],
                     ['Jobs skipped (errors)', $skipped],
-                    ['Total processed', $imported + $updated + $skipped],
+                    ['Jobs filtered out (non-AI)', $filteredOut],
+                    ['Total fetched', count($jobs)],
+                    ['Total AI jobs processed', $imported + $updated],
                 ]
             );
 

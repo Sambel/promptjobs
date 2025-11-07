@@ -2,6 +2,7 @@
 
 namespace App\Services\JobApis;
 
+use App\Services\AiJobFilterService;
 use App\Services\TextCleanerService;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
@@ -31,9 +32,24 @@ class RemotiveService implements JobApiInterface
                 return [];
             }
 
-            return array_map(function ($job) {
-                return $this->transformJob($job);
-            }, $data['jobs']);
+            // Filter and transform jobs
+            $jobs = [];
+            foreach ($data['jobs'] as $job) {
+                $transformed = $this->transformJob($job);
+
+                // Only include AI-related jobs
+                if (AiJobFilterService::isAiRelated($transformed['title'], $transformed['description'])) {
+                    $jobs[] = $transformed;
+                }
+            }
+
+            Log::info('Remotive jobs filtered', [
+                'total' => count($data['jobs']),
+                'ai_related' => count($jobs),
+                'filtered_out' => count($data['jobs']) - count($jobs),
+            ]);
+
+            return $jobs;
 
         } catch (\Exception $e) {
             Log::error('Remotive API exception', ['message' => $e->getMessage()]);
