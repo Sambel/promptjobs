@@ -3,6 +3,7 @@
 namespace App\Services\JobApis;
 
 use App\Services\AiJobFilterService;
+use App\Services\RemoteDetectionService;
 use App\Services\TextCleanerService;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
@@ -74,6 +75,8 @@ class TheMuseService implements JobApiInterface
     {
         $company = $job['company'] ?? [];
         $locations = $job['locations'] ?? [];
+        $location = $this->extractLocation($locations);
+        $description = $this->extractDescription($job);
 
         return [
             'external_id' => $job['id'] ?? null,
@@ -82,9 +85,9 @@ class TheMuseService implements JobApiInterface
             'title' => $job['name'] ?? 'Untitled Position',
             'company' => $company['name'] ?? 'Unknown Company',
             'company_logo' => $this->getCompanyLogo($company),
-            'description' => $this->extractDescription($job),
-            'location' => $this->extractLocation($locations),
-            'remote' => $this->isRemote($locations),
+            'description' => $description,
+            'location' => $location,
+            'remote' => RemoteDetectionService::isRemote($location, $description),
             'job_type' => $this->determineJobType($job),
             'salary_range' => null, // TheMuse doesn't provide salary in API
             'apply_url' => $job['refs']['landing_page'] ?? '#',
@@ -163,19 +166,6 @@ class TheMuseService implements JobApiInterface
         return $location['name'] ?? 'Remote';
     }
 
-    private function isRemote(array $locations): bool
-    {
-        foreach ($locations as $location) {
-            $name = strtolower($location['name'] ?? '');
-            if (str_contains($name, 'remote') ||
-                str_contains($name, 'flexible') ||
-                str_contains($name, 'anywhere')) {
-                return true;
-            }
-        }
-
-        return false;
-    }
 
     private function determineJobType(array $job): string
     {

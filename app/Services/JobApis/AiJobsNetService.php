@@ -2,6 +2,7 @@
 
 namespace App\Services\JobApis;
 
+use App\Services\RemoteDetectionService;
 use App\Services\TextCleanerService;
 
 use Illuminate\Support\Facades\Http;
@@ -53,6 +54,9 @@ class AiJobsNetService implements JobApiInterface
 
     private function transformJob(array $job): array
     {
+        $location = $job['location'] ?? null;
+        $description = $job['description'] ?? '';
+
         return [
             'external_id' => $job['id'] ?? null,
             'source' => self::SOURCE_NAME,
@@ -60,9 +64,9 @@ class AiJobsNetService implements JobApiInterface
             'title' => $job['title'] ?? 'Untitled Position',
             'company' => $job['company'] ?? 'Unknown Company',
             'company_logo' => $this->getCompanyLogo($job['company'] ?? null),
-            'description' => $job['description'] ?? '',
-            'location' => $job['location'] ?? null,
-            'remote' => $this->isRemote($job),
+            'description' => $description,
+            'location' => $location,
+            'remote' => RemoteDetectionService::isRemote($location, $description),
             'job_type' => $this->determineJobType($job),
             'salary_range' => $job['salary'] ?? null,
             'apply_url' => $job['url'] ?? '#',
@@ -83,13 +87,6 @@ class AiJobsNetService implements JobApiInterface
         return "https://logo.clearbit.com/{$domain}";
     }
 
-    private function isRemote(array $job): bool
-    {
-        $location = strtolower($job['location'] ?? '');
-        return str_contains($location, 'remote') ||
-               str_contains($location, 'anywhere') ||
-               str_contains($location, 'worldwide');
-    }
 
     private function determineJobType(array $job): string
     {

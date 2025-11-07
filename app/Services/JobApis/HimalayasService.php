@@ -3,6 +3,7 @@
 namespace App\Services\JobApis;
 
 use App\Services\AiJobFilterService;
+use App\Services\RemoteDetectionService;
 use App\Services\TextCleanerService;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
@@ -76,6 +77,9 @@ class HimalayasService implements JobApiInterface
 
     private function transformJob(array $job): array
     {
+        $location = $this->extractLocation($job);
+        $description = $this->cleanDescription($job['description'] ?? '');
+
         return [
             'external_id' => $job['id'] ?? null,
             'source' => self::SOURCE_NAME,
@@ -83,9 +87,9 @@ class HimalayasService implements JobApiInterface
             'title' => $job['title'] ?? 'Untitled Position',
             'company' => $job['company']['name'] ?? 'Unknown Company',
             'company_logo' => $this->getCompanyLogo($job),
-            'description' => $this->cleanDescription($job['description'] ?? ''),
-            'location' => $this->extractLocation($job),
-            'remote' => $this->isRemote($job),
+            'description' => $description,
+            'location' => $location,
+            'remote' => RemoteDetectionService::isRemote($location, $description),
             'job_type' => $this->determineJobType($job),
             'salary_range' => $this->extractSalary($job),
             'apply_url' => $job['url'] ?? '#',
@@ -129,19 +133,6 @@ class HimalayasService implements JobApiInterface
         return implode(', ', array_filter($locations));
     }
 
-    private function isRemote(array $job): bool
-    {
-        // Check remote field if available
-        if (isset($job['remote']) && $job['remote']) {
-            return true;
-        }
-
-        // Check location
-        $location = strtolower($job['location'] ?? '');
-        return str_contains($location, 'remote') ||
-               str_contains($location, 'anywhere') ||
-               str_contains($location, 'worldwide');
-    }
 
     private function determineJobType(array $job): string
     {

@@ -3,6 +3,7 @@
 namespace App\Services\JobApis;
 
 use App\Services\AiJobFilterService;
+use App\Services\RemoteDetectionService;
 use App\Services\TextCleanerService;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
@@ -64,6 +65,9 @@ class RemotiveService implements JobApiInterface
 
     private function transformJob(array $job): array
     {
+        $location = $job['candidate_required_location'] ?? 'Remote';
+        $description = $this->cleanDescription($job['description'] ?? '');
+
         return [
             'external_id' => $job['id'] ?? null,
             'source' => self::SOURCE_NAME,
@@ -71,9 +75,9 @@ class RemotiveService implements JobApiInterface
             'title' => $job['title'] ?? 'Untitled Position',
             'company' => $job['company_name'] ?? 'Unknown Company',
             'company_logo' => $job['company_logo'] ?? $this->getCompanyLogo($job['company_name'] ?? null),
-            'description' => $this->cleanDescription($job['description'] ?? ''),
-            'location' => $job['candidate_required_location'] ?? 'Remote',
-            'remote' => true, // Remotive is all remote
+            'description' => $description,
+            'location' => $location,
+            'remote' => RemoteDetectionService::isRemote($location, $description) ?: true, // Remotive is all remote by default
             'job_type' => $this->determineJobType($job),
             'salary_range' => $job['salary'] ?? null,
             'apply_url' => $job['url'] ?? '#',
