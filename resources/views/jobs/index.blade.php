@@ -214,7 +214,7 @@
                     <div class="flex items-center md:flex-shrink-0">
                         <span
                             data-href="{{ route('jobs.apply', $job) }}"
-                            onclick="window.location.href=this.getAttribute('data-href'); event.stopPropagation();"
+                            onclick="window.open(this.getAttribute('data-href'), '_blank'); event.stopPropagation();"
                             class="w-full md:w-auto px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium text-sm text-center whitespace-nowrap transition-colors min-h-[44px] flex items-center justify-center cursor-pointer"
                         >
                             ✉️ Apply Now

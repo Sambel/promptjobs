@@ -68,7 +68,7 @@
             <div class="flex items-start md:flex-shrink-0">
                 <span
                     data-href="{{ route('jobs.apply', $job) }}"
-                    onclick="window.location.href=this.getAttribute('data-href');"
+                    onclick="window.open(this.getAttribute('data-href'), '_blank');"
                     class="w-full md:w-auto px-6 md:px-8 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium text-base md:text-lg whitespace-nowrap transition-colors text-center min-h-[48px] flex items-center justify-center cursor-pointer"
                 >
                     ✉️ Apply Now
@@ -123,7 +123,7 @@
         <div class="mt-6 md:mt-8 pt-6 border-t border-gray-200">
             <span
                 data-href="{{ route('jobs.apply', $job) }}"
-                onclick="window.location.href=this.getAttribute('data-href');"
+                onclick="window.open(this.getAttribute('data-href'), '_blank');"
                 class="w-full md:w-auto inline-block px-6 md:px-8 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium text-base md:text-lg text-center min-h-[48px] cursor-pointer"
             >
                 ✉️ Apply for this position
