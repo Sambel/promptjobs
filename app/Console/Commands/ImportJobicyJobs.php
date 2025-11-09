@@ -77,6 +77,13 @@ class ImportJobicyJobs extends Command
 
             foreach ($jobs as $jobData) {
                 try {
+                    // Skip jobs without a valid company name
+                    if (empty($jobData['companyName'] ?? null)) {
+                        $skipped++;
+                        $bar->advance();
+                        continue;
+                    }
+
                     // Filter out non-AI jobs
                     $title = $jobData['jobTitle'] ?? '';
                     $description = ($jobData['jobDescription'] ?? '') . ' ' . ($jobData['jobExcerpt'] ?? '');

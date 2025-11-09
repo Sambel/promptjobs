@@ -37,6 +37,11 @@ class RemotiveService implements JobApiInterface
             // Filter and transform jobs
             $jobs = [];
             foreach ($data['jobs'] as $job) {
+                // Skip jobs without a valid company name
+                if (empty($job['company_name'] ?? null)) {
+                    continue;
+                }
+
                 $transformed = $this->transformJob($job);
 
                 // Only include AI-related jobs

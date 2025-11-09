@@ -40,6 +40,11 @@ class HimalayasService implements JobApiInterface
                 }
 
                 foreach ($data['jobs'] as $job) {
+                    // Skip jobs without a valid company name
+                    if (empty($job['company']['name'] ?? null)) {
+                        continue;
+                    }
+
                     $transformed = $this->transformJob($job);
 
                     // Only include AI-related jobs
