@@ -52,7 +52,7 @@
                 <div class="mb-4 md:mb-6">
                     <span class="text-5xl md:text-6xl">🚀</span>
                 </div>
-                <h2 class="text-xl md:text-2xl font-bold text-gray-900 mb-3 md:mb-4">Coming Soon!</h2>
+                <div class="text-xl md:text-2xl font-bold text-gray-900 mb-3 md:mb-4">Coming Soon!</div>
                 <p class="text-sm md:text-base text-gray-600 mb-4 md:mb-6 leading-relaxed">
                     We're working on this feature. Soon you'll be able to publish your AI job listing for <strong class="text-purple-600">$99</strong> and get:
                 </p>

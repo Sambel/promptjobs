@@ -150,7 +150,7 @@
                 @if(request('search'))
                     🔎 Search results for "{{ request('search') }}"
                 @else
-                    🤖 Remote AI Engineer Jobs
+                    Remote AI engineer Jobs - updated every 3 hours 🤖
                 @endif
             </h1>
             <span class="text-gray-600">💼 {{ $jobs->total() }} jobs</span>
