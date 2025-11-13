@@ -104,11 +104,17 @@ class JobController extends Controller
 
     public function show(string $company, string $slug)
     {
-        // Find job by slug
-        $job = Job::published()->where('slug', $slug)->firstOrFail();
+        // Find job by slug AND company (slugified)
+        // We need to get all jobs with this slug and filter by company
+        $job = Job::published()
+            ->where('slug', $slug)
+            ->get()
+            ->first(function ($job) use ($company) {
+                return \Illuminate\Support\Str::slug($job->company) === $company;
+            });
 
-        // Verify that the job belongs to the correct company (using slugified comparison)
-        if (\Illuminate\Support\Str::slug($job->company) !== $company) {
+        // If no job found with matching company slug, throw 404
+        if (!$job) {
             abort(404);
         }
 
