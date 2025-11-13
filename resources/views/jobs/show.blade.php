@@ -58,6 +58,23 @@
                         <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium capitalize">{{ str_replace('-', ' ', $job->job_type) }}</span>
                     </div>
 
+                    @if($job->badge_labels && count($job->badge_labels) > 0)
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        @foreach($job->badge_labels as $badge)
+                            @php
+                                $badgeClasses = match(true) {
+                                    str_contains($badge, 'Prompt Engineering') => 'bg-purple-100 text-purple-800 border-2 border-purple-300',
+                                    str_contains($badge, 'LLM Engineering') => 'bg-blue-100 text-blue-800 border-2 border-blue-300',
+                                    str_contains($badge, 'GenAI') => 'bg-amber-100 text-amber-800 border-2 border-amber-300',
+                                    str_contains($badge, 'ML Engineer') => 'bg-emerald-100 text-emerald-800 border-2 border-emerald-300',
+                                    default => 'bg-gray-100 text-gray-800',
+                                };
+                            @endphp
+                            <span class="px-3 py-1.5 rounded-full text-sm font-bold {{ $badgeClasses }}">{{ $badge }}</span>
+                        @endforeach
+                    </div>
+                    @endif
+
                     @if($job->salary_range)
                     <p class="text-lg font-semibold text-gray-900">💰 {{ $job->salary_range }}</p>
                     @endif

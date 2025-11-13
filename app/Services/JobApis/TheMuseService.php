@@ -2,7 +2,7 @@
 
 namespace App\Services\JobApis;
 
-use App\Services\AiJobFilterService;
+use App\Services\PromptEngineeringFilterService;
 use App\Services\JobDomainService;
 use App\Services\RemoteDetectionService;
 use App\Services\TextCleanerService;
@@ -46,8 +46,13 @@ class TheMuseService implements JobApiInterface
 
                     $transformed = $this->transformJob($job);
 
-                    // Only include AI-related jobs
-                    if (AiJobFilterService::isAiRelated($transformed['title'], $transformed['description'])) {
+                    // Only include LLM/GenAI/Prompt Engineering jobs
+                    if (PromptEngineeringFilterService::isLLMRelated($transformed['title'], $transformed['description'])) {
+                        // Detect and add categories
+                        $transformed['categories'] = PromptEngineeringFilterService::detectCategories(
+                            $transformed['title'],
+                            $transformed['description']
+                        );
                         $allJobs[] = $transformed;
                     }
                 }
@@ -61,7 +66,7 @@ class TheMuseService implements JobApiInterface
             }
 
             Log::info('TheMuse jobs filtered', [
-                'ai_related' => count($allJobs),
+                'llm_related' => count($allJobs),
             ]);
 
             return $allJobs;

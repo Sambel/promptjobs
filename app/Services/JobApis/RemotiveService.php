@@ -2,7 +2,7 @@
 
 namespace App\Services\JobApis;
 
-use App\Services\AiJobFilterService;
+use App\Services\PromptEngineeringFilterService;
 use App\Services\JobDomainService;
 use App\Services\RemoteDetectionService;
 use App\Services\TextCleanerService;
@@ -44,15 +44,20 @@ class RemotiveService implements JobApiInterface
 
                 $transformed = $this->transformJob($job);
 
-                // Only include AI-related jobs
-                if (AiJobFilterService::isAiRelated($transformed['title'], $transformed['description'])) {
+                // Only include LLM/GenAI/Prompt Engineering jobs
+                if (PromptEngineeringFilterService::isLLMRelated($transformed['title'], $transformed['description'])) {
+                    // Detect and add categories
+                    $transformed['categories'] = PromptEngineeringFilterService::detectCategories(
+                        $transformed['title'],
+                        $transformed['description']
+                    );
                     $jobs[] = $transformed;
                 }
             }
 
             Log::info('Remotive jobs filtered', [
                 'total' => count($data['jobs']),
-                'ai_related' => count($jobs),
+                'llm_related' => count($jobs),
                 'filtered_out' => count($data['jobs']) - count($jobs),
             ]);
 

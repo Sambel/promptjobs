@@ -79,19 +79,34 @@
                                 <span class="text-gray-400 text-xs md:text-sm whitespace-nowrap">{{ $job->published_at->diffForHumans() }}</span>
                             </div>
 
-                            @if((count($job->programming_languages) > 0) || (count($job->generic_tags) > 0))
                             <div class="flex flex-wrap gap-1.5 md:gap-2">
-                                @foreach(array_slice($job->generic_tags, 0, 3) as $tag)
-                                <span class="px-2 py-1 bg-blue-50 text-blue-700 rounded text-xs font-medium">{{ $tag }}</span>
-                                @endforeach
-                                @foreach(array_slice($job->programming_languages, 0, 3) as $lang)
-                                <span class="px-2 py-1 bg-gray-100 text-gray-700 rounded text-xs font-mono">{{ $lang }}</span>
-                                @endforeach
-                                @if(count($job->generic_tags) + count($job->programming_languages) > 6)
-                                <span class="px-2 py-1 text-gray-500 text-xs">+{{ count($job->generic_tags) + count($job->programming_languages) - 6 }}</span>
+                                @if($job->badge_labels && count($job->badge_labels) > 0)
+                                    @foreach($job->badge_labels as $badge)
+                                        @php
+                                            $badgeClasses = match(true) {
+                                                str_contains($badge, 'Prompt Engineering') => 'bg-purple-100 text-purple-800 border border-purple-200',
+                                                str_contains($badge, 'LLM Engineering') => 'bg-blue-100 text-blue-800 border border-blue-200',
+                                                str_contains($badge, 'GenAI') => 'bg-amber-100 text-amber-800 border border-amber-200',
+                                                str_contains($badge, 'ML Engineer') => 'bg-emerald-100 text-emerald-800 border border-emerald-200',
+                                                default => 'bg-gray-100 text-gray-800',
+                                            };
+                                        @endphp
+                                        <span class="px-2 py-1 rounded text-xs font-semibold {{ $badgeClasses }}">{{ $badge }}</span>
+                                    @endforeach
+                                @endif
+
+                                @if((count($job->programming_languages) > 0) || (count($job->generic_tags) > 0))
+                                    @foreach(array_slice($job->generic_tags, 0, 3) as $tag)
+                                    <span class="px-2 py-1 bg-blue-50 text-blue-700 rounded text-xs font-medium">{{ $tag }}</span>
+                                    @endforeach
+                                    @foreach(array_slice($job->programming_languages, 0, 3) as $lang)
+                                    <span class="px-2 py-1 bg-gray-100 text-gray-700 rounded text-xs font-mono">{{ $lang }}</span>
+                                    @endforeach
+                                    @if(count($job->generic_tags) + count($job->programming_languages) > 6)
+                                    <span class="px-2 py-1 text-gray-500 text-xs">+{{ count($job->generic_tags) + count($job->programming_languages) - 6 }}</span>
+                                    @endif
                                 @endif
                             </div>
-                            @endif
                         </div>
                     </a>
 

@@ -3,7 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Models\Job;
-use App\Services\AiJobFilterService;
+use App\Services\PromptEngineeringFilterService;
 use App\Services\LocationNormalizerService;
 use App\Services\TextCleanerService;
 use Illuminate\Console\Command;
@@ -84,15 +84,18 @@ class ImportJobicyJobs extends Command
                         continue;
                     }
 
-                    // Filter out non-AI jobs
+                    // Filter out non-LLM/GenAI/Prompt Engineering jobs
                     $title = $jobData['jobTitle'] ?? '';
                     $description = ($jobData['jobDescription'] ?? '') . ' ' . ($jobData['jobExcerpt'] ?? '');
 
-                    if (!AiJobFilterService::isAiRelated($title, $description)) {
+                    if (!PromptEngineeringFilterService::isLLMRelated($title, $description)) {
                         $filteredOut++;
                         $bar->advance();
                         continue;
                     }
+
+                    // Detect categories for the job
+                    $categories = PromptEngineeringFilterService::detectCategories($title, $description);
                     // Check if job already exists by external_id
                     $existingJob = Job::where('external_id', $jobData['id'])
                         ->where('source', 'jobicy')
@@ -135,6 +138,7 @@ class ImportJobicyJobs extends Command
                         'salary_range' => $salaryRange,
                         'apply_url' => $jobData['url'],
                         'tags' => $tags,
+                        'categories' => $categories,
                         'featured' => false,
                         'published_at' => isset($jobData['pubDate']) ? date('Y-m-d H:i:s', strtotime($jobData['pubDate'])) : now(),
                     ];

@@ -26,12 +26,14 @@ class Job extends Model
         'salary_range',
         'apply_url',
         'tags',
+        'categories',
         'featured',
         'published_at',
     ];
 
     protected $casts = [
         'tags' => 'array',
+        'categories' => 'array',
         'remote' => 'boolean',
         'featured' => 'boolean',
         'published_at' => 'datetime',
@@ -165,5 +167,31 @@ class Job extends Model
         $normalizedLocations = \App\Services\LocationNormalizerService::normalize($locationString);
         $locationIds = \App\Services\LocationNormalizerService::getOrCreateLocations($normalizedLocations);
         $this->locations()->sync($locationIds);
+    }
+
+    /**
+     * Get badge labels with emojis for the categories
+     */
+    public function getBadgeLabelsAttribute(): array
+    {
+        if (!$this->categories) {
+            return [];
+        }
+
+        return \App\Services\PromptEngineeringFilterService::getBadgeLabels($this->categories);
+    }
+
+    /**
+     * Detect and set categories based on title and description
+     * Should be called when creating/updating a job
+     */
+    public function detectAndSetCategories(): void
+    {
+        $categories = \App\Services\PromptEngineeringFilterService::detectCategories(
+            $this->title ?? '',
+            $this->description ?? ''
+        );
+
+        $this->categories = $categories;
     }
 }
