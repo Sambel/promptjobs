@@ -7,7 +7,7 @@
 
     <!-- Header -->
     <div class="mb-6 md:mb-8">
-        <h1 class="text-2xl md:text-3xl font-bold text-gray-900 mb-2">🏢 AI Companies Currently Hiring</h1>
+        <h1 class="text-2xl md:text-3xl font-bold text-gray-900 mb-2">AI Companies Currently Hiring engineers remotely 🏢</h1>
         <p class="text-sm md:text-base text-gray-600">Discover companies actively hiring for AI & Machine Learning roles</p>
     </div>
 
