@@ -132,6 +132,31 @@ class PromptEngineeringFilterService
     ];
 
     /**
+     * Vérifie si un mot-clé correspond avec word boundaries pour éviter les faux positifs
+     * Utilise regex pour les acronymes courts (LLM, AI, ML, NLP, etc.)
+     *
+     * @param string $text Texte à chercher (en minuscules)
+     * @param string $keyword Mot-clé à chercher
+     * @return bool
+     */
+    private static function matchesKeyword(string $text, string $keyword): bool
+    {
+        $keywordLower = strtolower($keyword);
+
+        // Liste des acronymes courts qui nécessitent word boundaries
+        $acronyms = ['llm', 'ai', 'ml', 'nlp', 'gpt', 'genai'];
+
+        // Si c'est un acronyme court, utiliser word boundary
+        if (in_array($keywordLower, $acronyms)) {
+            // \b = word boundary (début ou fin de mot)
+            return preg_match('/\b' . preg_quote($keywordLower, '/') . '\b/i', $text) === 1;
+        }
+
+        // Pour les mots composés ou phrases, utiliser str_contains
+        return str_contains($text, $keywordLower);
+    }
+
+    /**
      * Vérifie si un job est lié à LLM/GenAI/Prompt Engineering
      *
      * @param string $title Titre du job
@@ -143,7 +168,7 @@ class PromptEngineeringFilterService
         $text = strtolower($title . ' ' . $description);
 
         foreach (self::LLM_KEYWORDS as $keyword) {
-            if (str_contains($text, strtolower($keyword))) {
+            if (self::matchesKeyword($text, $keyword)) {
                 return true;
             }
         }
@@ -165,7 +190,7 @@ class PromptEngineeringFilterService
 
         foreach (self::CATEGORIES as $category => $keywords) {
             foreach ($keywords as $keyword) {
-                if (str_contains($text, strtolower($keyword))) {
+                if (self::matchesKeyword($text, $keyword)) {
                     $detectedCategories[] = $category;
                     break; // Une seule occurrence suffit pour cette catégorie
                 }
