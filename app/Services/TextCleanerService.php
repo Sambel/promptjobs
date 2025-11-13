@@ -59,6 +59,29 @@ class TextCleanerService
     }
 
     /**
+     * Clean company name - removes tracking parameters and URL artifacts
+     */
+    public static function cleanCompanyName(string $company): string
+    {
+        // First apply standard text cleaning
+        $company = self::cleanText($company);
+
+        // Remove URL query parameters (e.g., "Oneapp?subid1=..." becomes "Oneapp")
+        $company = preg_replace('/\?.*$/', '', $company);
+
+        // Remove URL fragments (e.g., "Company#section" becomes "Company")
+        $company = preg_replace('/#.*$/', '', $company);
+
+        // Remove trailing slashes
+        $company = rtrim($company, '/');
+
+        // Trim again after removals
+        $company = trim($company);
+
+        return $company;
+    }
+
+    /**
      * Clean tags array
      */
     public static function cleanTags(array $tags): array
@@ -78,9 +101,9 @@ class TextCleanerService
             $jobData['title'] = self::cleanText($jobData['title']);
         }
 
-        // Clean company name
+        // Clean company name (removes tracking parameters)
         if (isset($jobData['company'])) {
-            $jobData['company'] = self::cleanText($jobData['company']);
+            $jobData['company'] = self::cleanCompanyName($jobData['company']);
         }
 
         // Clean description

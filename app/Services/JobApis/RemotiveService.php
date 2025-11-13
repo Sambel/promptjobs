@@ -79,14 +79,15 @@ class RemotiveService implements JobApiInterface
         $title = $job['title'] ?? 'Untitled Position';
         $location = $job['candidate_required_location'] ?? 'Remote';
         $description = $this->cleanDescription($job['description'] ?? '');
+        $companyName = TextCleanerService::cleanCompanyName($job['company_name'] ?? 'Unknown Company');
 
         return [
             'external_id' => $job['id'] ?? null,
             'source' => self::SOURCE_NAME,
             'source_url' => $job['url'] ?? null,
             'title' => $title,
-            'company' => $job['company_name'] ?? 'Unknown Company',
-            'company_logo' => $job['company_logo'] ?? $this->getCompanyLogo($job['company_name'] ?? null),
+            'company' => $companyName,
+            'company_logo' => $job['company_logo'] ?? $this->getCompanyLogo($companyName),
             'description' => $description,
             'location' => $location,
             'remote' => RemoteDetectionService::isRemote($location, $description) ?: true, // Remotive is all remote by default
