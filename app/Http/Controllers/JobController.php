@@ -113,9 +113,9 @@ class JobController extends Controller
                 return \Illuminate\Support\Str::slug($job->company) === $company;
             });
 
-        // If no job found with matching company slug, throw 404
+        // If no job found, redirect to companies index (301 for SEO)
         if (!$job) {
-            abort(404);
+            return redirect()->route('companies.index', [], 301);
         }
 
         // Get similar jobs based on tags (categories)
@@ -184,8 +184,9 @@ class JobController extends Controller
                 return \Illuminate\Support\Str::slug($job->company) === $companySlug;
             });
 
+        // If no jobs found for this company, redirect to companies index (301 for SEO)
         if ($jobs->isEmpty()) {
-            abort(404);
+            return redirect()->route('companies.index', [], 301);
         }
 
         // Get the actual company name from the first job
