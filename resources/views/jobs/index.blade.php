@@ -32,7 +32,7 @@
         <main class="lg:col-span-3">
 
     <!-- Active Filters Display -->
-    @if(request()->hasAny(['search', 'company', 'zone', 'country', 'remote_type', 'job_type', 'domain']))
+    @if(request()->hasAny(['search', 'company', 'zone', 'country', 'remote_type', 'job_type', 'specialization']))
     <div class="mb-6">
         <div class="flex items-center gap-2 flex-wrap">
             <span class="text-sm font-medium text-gray-700">Active filters:</span>
@@ -44,10 +44,10 @@
             </span>
             @endif
 
-            @if(request('domain'))
+            @if(request('specialization'))
             <span class="inline-flex items-center gap-1 px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm max-w-[200px]">
-                <span class="truncate">{{ \App\Services\JobDomainService::getDomainLabel(request('domain')) }}</span>
-                <a href="{{ request()->fullUrlWithQuery(['domain' => null]) }}" class="hover:text-blue-900 flex-shrink-0 text-lg leading-none">×</a>
+                <span class="truncate">{{ $specializations[request('specialization')] ?? request('specialization') }}</span>
+                <a href="{{ request()->fullUrlWithQuery(['specialization' => null]) }}" class="hover:text-blue-900 flex-shrink-0 text-lg leading-none">×</a>
             </span>
             @endif
 
@@ -293,8 +293,8 @@
             <form method="GET" action="{{ route('jobs.index') }}" id="filterForm">
             <div class="bg-white border border-gray-200 rounded-lg p-4 lg:sticky lg:top-8">
                 <div class="flex items-center justify-between mb-4">
-                    <h3 class="font-semibold text-gray-900">🎯 Filters</h3>
-                    @if(request()->hasAny(['company', 'zone', 'country', 'remote_type', 'job_type', 'domain']))
+                    <h3 class="font-semibold text-gray-900">Filters 🎯</h3>
+                    @if(request()->hasAny(['company', 'zone', 'country', 'remote_type', 'job_type', 'specialization']))
                     <a href="{{ route('jobs.index') }}" class="text-xs text-blue-600 hover:text-blue-800">
                         Clear all
                     </a>
@@ -302,17 +302,17 @@
                 </div>
 
                 <div class="space-y-4">
-                    <!-- Domain Filter -->
+                    <!-- Specialization Filter -->
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">💼 Category</label>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Specialization 🎯</label>
                         <select
-                            name="domain"
+                            name="specialization"
                             onchange="this.form.submit()"
                             class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
                         >
-                            <option value="">All Categories</option>
-                            @foreach($domains as $slug => $label)
-                            <option value="{{ $slug }}" {{ request('domain') === $slug ? 'selected' : '' }}>
+                            <option value="">All Specializations</option>
+                            @foreach($specializations as $slug => $label)
+                            <option value="{{ $slug }}" {{ request('specialization') === $slug ? 'selected' : '' }}>
                                 {{ $label }}
                             </option>
                             @endforeach
@@ -321,7 +321,7 @@
 
                     <!-- Company Filter -->
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">🏢 Company</label>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Company 🏢</label>
                         <select
                             name="company"
                             onchange="this.form.submit()"
@@ -338,7 +338,7 @@
 
                     <!-- Zone Filter -->
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">🌍 Zone</label>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Zone 🌍</label>
                         <select
                             name="zone"
                             onchange="this.form.submit()"
@@ -355,7 +355,7 @@
 
                     <!-- Country Filter -->
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">📍 Country</label>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Country 📍</label>
                         <select
                             name="country"
                             onchange="this.form.submit()"
@@ -372,7 +372,7 @@
 
                     <!-- Remote Type Filter -->
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">🏠 Work Mode</label>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Work Mode 🏠</label>
                         <select
                             name="remote_type"
                             onchange="this.form.submit()"
@@ -386,7 +386,7 @@
 
                     <!-- Job Type Filter -->
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">⏰ Job Type</label>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Job Type ⏰</label>
                         <select
                             name="job_type"
                             onchange="this.form.submit()"
@@ -407,7 +407,7 @@
     </div>
 
     <!-- SEO Content Section -->
-    @if(!request('search') && !request()->hasAny(['company', 'zone', 'country', 'remote_type', 'job_type', 'domain']))
+    @if(!request('search') && !request()->hasAny(['company', 'zone', 'country', 'remote_type', 'job_type', 'specialization']))
     <div class="mt-16 bg-white border border-gray-200 rounded-lg p-6 md:p-8">
         <h2 class="text-2xl font-bold text-gray-900 mb-4">Find Your Next Remote AI Engineer Job</h2>
         <div class="prose prose-sm max-w-none text-gray-700 space-y-4">

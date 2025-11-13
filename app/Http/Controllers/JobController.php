@@ -60,9 +60,9 @@ class JobController extends Controller
             $query->where('job_type', $request->job_type);
         }
 
-        // Filter by domain
-        if ($request->filled('domain')) {
-            $query->where('domain', $request->domain);
+        // Filter by specialization (categories)
+        if ($request->filled('specialization')) {
+            $query->whereJsonContains('categories', $request->specialization);
         }
 
         // Filter by tags
@@ -96,10 +96,15 @@ class JobController extends Controller
             ->distinct()
             ->pluck('job_type');
 
-        // Get available domains
-        $domains = JobDomainService::getDomains();
+        // Get available specializations (from PromptEngineeringFilterService)
+        $specializations = [
+            'prompt_engineering' => 'Prompt Engineering',
+            'llm_engineering' => 'LLM Engineering',
+            'genai' => 'GenAI',
+            'ml_engineer' => 'ML Engineer',
+        ];
 
-        return view('jobs.index', compact('jobs', 'featuredJobs', 'companies', 'zones', 'countries', 'jobTypes', 'domains'));
+        return view('jobs.index', compact('jobs', 'featuredJobs', 'companies', 'zones', 'countries', 'jobTypes', 'specializations'));
     }
 
     public function show(string $company, string $slug)
