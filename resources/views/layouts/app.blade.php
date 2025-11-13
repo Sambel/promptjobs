@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="@yield('meta_description', 'Find remote AI engineer jobs specializing in LLM, GenAI, and Prompt Engineering. Browse opportunities from top companies hiring AI talent worldwide.')">
     <meta name="google-site-verification" content="zLESLfpqaZAQWor2Y62p6DFt6zma2K4mJ5kWjgvMGus" />
     <meta name="google-site-verification" content="BPiNRgo1wVTmtMpKqy-Kgyo9fEeqEBxt0eCXeRpTLIU" />
-    <title>@yield('title', 'PromptJobs.io - Find your next AI job')</title>
+    <title>@yield('title', 'PromptJobs.io - Remote AI Engineer Jobs')</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body {
@@ -19,7 +20,7 @@
         <div class="max-w-7xl mx-auto px-4 py-3 md:py-4">
             <div class="flex items-center justify-between">
                 <div class="flex items-center space-x-4 md:space-x-8 flex-1">
-                    <a href="{{ route('jobs.index') }}" class="flex items-center space-x-2" title="Ai jobs">
+                    <a href="{{ route('jobs.index') }}" class="flex items-center space-x-2" title="Remote AI Engineer Jobs">
                         <span class="text-xl md:text-2xl font-bold text-gray-900">PromptJobs.io</span>
                     </a>
                     <!-- Desktop Navigation -->
@@ -97,7 +98,7 @@
     <footer class="bg-white border-t border-gray-200 mt-16">
         <div class="max-w-7xl mx-auto px-4 py-8">
             <p class="text-center text-gray-600 text-sm">
-                &copy; {{ date('Y') }} PromptJobs.io - 🤖 Find your next AI job
+                &copy; {{ date('Y') }} PromptJobs.io - Remote AI Engineer Jobs in LLM, GenAI & Prompt Engineering
             </p>
         </div>
     </footer>

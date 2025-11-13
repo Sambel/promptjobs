@@ -1,6 +1,8 @@
 @extends('layouts.app')
 
-@section('title', 'Official AI Job Board - PromptJobs.io')
+@section('title', 'Remote AI Engineer Jobs - LLM, GenAI & Prompt Engineering | PromptJobs.io')
+
+@section('meta_description', 'Find remote AI engineer jobs specializing in LLM, GenAI, and Prompt Engineering. Browse 40+ opportunities from top companies hiring AI talent worldwide.')
 
 @section('content')
 <div class="max-w-7xl mx-auto px-4 py-8">
@@ -148,7 +150,7 @@
                 @if(request('search'))
                     🔎 Search results for "{{ request('search') }}"
                 @else
-                    🤖 All AI Jobs
+                    🤖 Remote AI Engineer Jobs
                 @endif
             </h1>
             <span class="text-gray-600">💼 {{ $jobs->total() }} jobs</span>
@@ -403,6 +405,35 @@
             </form>
         </aside>
     </div>
+
+    <!-- SEO Content Section -->
+    @if(!request('search') && !request()->hasAny(['company', 'zone', 'country', 'remote_type', 'job_type', 'domain']))
+    <div class="mt-16 bg-white border border-gray-200 rounded-lg p-6 md:p-8">
+        <h2 class="text-2xl font-bold text-gray-900 mb-4">Find Your Next Remote AI Engineer Job</h2>
+        <div class="prose prose-sm max-w-none text-gray-700 space-y-4">
+            <p>
+                <strong>PromptJobs.io</strong> is the leading job board for <strong>remote AI engineer jobs</strong> specializing in cutting-edge technologies like <strong>Large Language Models (LLM)</strong>, <strong>Generative AI (GenAI)</strong>, and <strong>Prompt Engineering</strong>. We curate opportunities from top companies actively hiring AI talent worldwide.
+            </p>
+            <p>
+                Whether you're an experienced <strong>AI engineer</strong>, <strong>ML engineer</strong>, or <strong>prompt engineer</strong>, find your perfect remote position with competitive salaries and flexible work arrangements. Browse <strong>{{ $jobs->total() }}+ remote AI engineering jobs</strong> updated daily from innovative companies pushing the boundaries of artificial intelligence.
+            </p>
+            <div class="grid md:grid-cols-3 gap-4 mt-6">
+                <div class="bg-purple-50 rounded-lg p-4">
+                    <h3 class="font-semibold text-purple-900 mb-2">🎯 Prompt Engineering</h3>
+                    <p class="text-sm text-purple-800">Specialized roles in prompt design, optimization, and LLM interaction development.</p>
+                </div>
+                <div class="bg-blue-50 rounded-lg p-4">
+                    <h3 class="font-semibold text-blue-900 mb-2">🤖 LLM Engineering</h3>
+                    <p class="text-sm text-blue-800">Build and deploy large language models with OpenAI, Anthropic, and open-source frameworks.</p>
+                </div>
+                <div class="bg-amber-50 rounded-lg p-4">
+                    <h3 class="font-semibold text-amber-900 mb-2">⚡ GenAI Development</h3>
+                    <p class="text-sm text-amber-800">Create next-generation AI applications using GPT, Claude, and other generative models.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    @endif
 
 </div>
 @endsection
