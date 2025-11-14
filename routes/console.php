@@ -8,8 +8,9 @@ Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote');
 
-// Schedule job imports every 6 hours (includes all sources: Remotive, TheMuse, Himalayas, AiJobsNet)
-Schedule::command('jobs:import')->everySixHours();
+// Schedule job imports every 3 hours (includes sources: Remotive, TheMuse, AiJobsNet)
+// Note: Himalayas temporarily disabled due to API timeout issues
+Schedule::command('jobs:import')->everyThreeHours();
 
 // Schedule Jobicy imports every 6 hours
 Schedule::command('jobs:import-jobicy', ['--count' => 100])->everySixHours();

@@ -32,7 +32,7 @@ class ImportJobsFromApis implements ShouldQueue
             new AiJobsNetService(),
             new RemotiveService(),
             new TheMuseService(),
-            new HimalayasService(),
+            // new HimalayasService(), // Temporarily disabled - API freezes for 60s
         ];
 
         $totalImported = 0;
